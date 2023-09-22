@@ -63,7 +63,7 @@ func uploadFile(c *gin.Context) {
 	}
 
 	fmt.Println(text)
-	c.JSON(http.StatusOK, gin.H{"filepaths": "filePaths"})
+	c.JSON(http.StatusOK, gin.H{"text": text})
 }
 
 func main() {
