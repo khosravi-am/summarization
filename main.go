@@ -14,6 +14,7 @@ import (
 var text string
 
 func getIndexPage(c *gin.Context) {
+	text = ""
 	var title string = "SUMMARIZE YOUR ARTICLE!"
 	c.HTML(http.StatusOK, "index.html", gin.H{
 		"title": title,
@@ -27,7 +28,7 @@ func getUploadPage(c *gin.Context) {
 	bag := tldr.New()
 	result, err := bag.Summarize(text, intoSentences)
 	if err != nil {
-		c.String(http.StatusBadRequest, fmt.Sprintf("file err : %s", err.Error()))
+		c.String(http.StatusBadRequest, fmt.Sprintf("summarize err : %s", err.Error()))
 		return
 	}
 
@@ -40,6 +41,7 @@ func getUploadPage(c *gin.Context) {
 }
 
 func uploadFile(c *gin.Context) {
+	text = ""
 	fmt.Println("uploadFile")
 	file, header, err := c.Request.FormFile("articleFile")
 	if err != nil {
@@ -52,7 +54,7 @@ func uploadFile(c *gin.Context) {
 		n, err := file.Read(buf)
 
 		if err != nil && err != io.EOF {
-			log.Println("Couldn't write file: ")
+			log.Println("Couldn't read file: ")
 			break
 		}
 
@@ -63,7 +65,7 @@ func uploadFile(c *gin.Context) {
 	}
 
 	fmt.Println(text)
-	c.JSON(http.StatusOK, gin.H{"text": text})
+	c.JSON(http.StatusOK, gin.H{"text": "text uploaded"})
 }
 
 func main() {
